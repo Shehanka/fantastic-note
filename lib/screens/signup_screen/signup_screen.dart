@@ -14,8 +14,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
+  _SignUpScreenState createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
   final BaseAuthentication _authentication = Authentication();
   final UserService _userService = UserService();
   final _formKeySignUp = GlobalKey<FormState>();
@@ -43,8 +49,23 @@ class SignUpScreen extends StatelessWidget {
       Modular.to.navigate('/home');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
+        showTopSnackBar(
+          context,
+          CustomSnackBar.info(
+            message: "The password provided is too weak.",
+            backgroundColor: Colors.amberAccent,
+            textStyle: TextStyle(color: Colors.black),
+          ),
+        );
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
+        showTopSnackBar(
+          context,
+          CustomSnackBar.info(
+            message: "The account already exists for that email.",
+            backgroundColor: Colors.redAccent,
+          ),
+        );
         print('The account already exists for that email.');
       }
     } catch (e) {
