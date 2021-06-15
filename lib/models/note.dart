@@ -1,7 +1,7 @@
 class Note {
-  String _id;
-  String _title;
-  String _body;
+  late String _id;
+  late String _title;
+  late String _body;
 
   Note(this._id, this._title, this._body);
 
