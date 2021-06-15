@@ -11,7 +11,7 @@ class NoteService {
 
       final Map<String, dynamic> data = note.toMap();
 
-      await tx.set(ds.reference, data);
+      tx.set(ds.reference, data);
 
       return data;
     };

@@ -10,12 +10,16 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
+
   // BaseAuthentication _authentication;
   // User _firebaseUser;
 
   @override
   initState() async {
     super.initState();
+
+
 
     // _authentication = Authentication();
     // _firebaseUser = FirebaseAuth.instance.currentUser;
@@ -26,7 +30,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    throw Scaffold(
+
+    return Scaffold(
         body: Stack(
       fit: StackFit.expand,
       children: <Widget>[
