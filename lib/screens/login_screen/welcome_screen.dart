@@ -1,4 +1,3 @@
-import 'package:fantastic_note/screens/login_screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -38,7 +37,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Text(
-              "You will not forget anything with StudyMate",
+              "You will not forget anything with Fantastic Note",
               softWrap: true,
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -55,10 +54,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 40.0),
               child: MaterialButton(
                 color: Colors.deepPurpleAccent,
-                child: Text("Sign In"),
+                child: Text(
+                  "Sign In",
+                  style: TextStyle(color: Colors.white),
+                ),
                 onPressed: () {
-                  // Navigator.pushNamed(context, "/signin");
-                  print("Sign in pressed");
                   Modular.to.navigate('/login');
                 },
               )),
@@ -68,8 +68,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               child: MaterialButton(
                 child: Text("Sign Up"),
                 onPressed: () {
-                  // Navigator.pushNamed(context, "/signin");
-                             Modular.to.navigate('/signup');
+                  Modular.to.navigate('/signup');
                 },
               )),
           Padding(
@@ -77,9 +76,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 40.0),
               child: MaterialButton(
                 child: Text("Other"),
-                onPressed: () {
-                  // Navigator.pushNamed(context, "/signin");
-                },
+                onPressed: () {},
               )),
         ],
       ),
