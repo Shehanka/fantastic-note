@@ -1,4 +1,5 @@
 import 'package:fantastic_note/services/auth/authentication.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -6,6 +7,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+
+
+
   late BaseAuthentication _authentication;
   final _formKeyLogin = GlobalKey<FormState>();
   late TextField _emailField;
@@ -16,6 +21,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
+
+// _initialization;
 
     _authentication = Authentication();
 

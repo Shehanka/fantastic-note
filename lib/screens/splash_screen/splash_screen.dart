@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
   // User _firebaseUser;
 
   @override
-  initState() async {
+  initState(){
     super.initState();
 
 
