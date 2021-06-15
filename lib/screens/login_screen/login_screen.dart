@@ -1,4 +1,5 @@
 import 'package:fantastic_note/services/auth/authentication.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -9,7 +10,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late BaseAuthentication _authentication;
   final _formKeyLogin = GlobalKey<FormState>();
-  late TextField _emailField;
+  late TextFormField _emailField;
   late TextField _passwordField = TextField();
   late final TextEditingController _passwordController;
   late final TextEditingController _emailController;
@@ -23,12 +24,42 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
 
-    _emailField = TextField(
+    _emailField = TextFormField(
       controller: _emailController,
+      decoration: InputDecoration(
+          icon: Icon(Icons.email),
+          labelText: 'Email',
+          hintText: 'Enter your email address'),
+      cursorColor: Colors.deepPurpleAccent,
+      validator: (String? value) {
+        return (value != null && value.contains('@'))
+            ? 'Do not use the @ char.'
+            : null;
+      },
+    );
+    _passwordField = TextField(
+      controller: _passwordController,
+      decoration: InputDecoration(
+          icon: Icon(Icons.password),
+          labelText: 'Password',
+          hintText: 'Enter password'),
     );
   }
 
-  VoidCallback onBackPressed = () async {};
+  Future _userLogin() async {
+    if (_formKeyLogin.currentState!.validate()) {
+      _formKeyLogin.currentState!.save();
+
+      Future<User?> firebaseUser = _authentication.signIn(
+          _emailController.text, _passwordController.text);
+
+      firebaseUser
+          .then((value) => {Modular.to.navigate('/home')})
+          .catchError((e) {
+        print('Sign in Failed $e');
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +92,29 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: 20.0, bottom: 10.0, left: 25.0, right: 25.0),
+                  child: _emailField,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: 20.0, bottom: 10.0, left: 25.0, right: 25.0),
+                  child: _passwordField,
+                ),
+                Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 40.0),
+                  child: MaterialButton(
+                    child: Text(
+                      'Login',
+                      style: TextStyle(
+                          color: Colors.white,
+                          backgroundColor: Colors.deepPurpleAccent),
+                    ),
+                    onPressed: _userLogin,
+                  ),
+                )
               ],
             )
           ],
