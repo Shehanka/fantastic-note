@@ -17,7 +17,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           Padding(
             padding: EdgeInsets.only(top: 160.0),
             child: Icon(
-              Icons.school,
+              Icons.note,
               color: Colors.deepPurpleAccent,
               size: 125.0,
             ),
