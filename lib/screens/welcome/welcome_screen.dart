@@ -1,6 +1,6 @@
 import 'package:fantastic_note/components/rounded_button.dart';
 import 'package:fantastic_note/constants.dart';
-import 'package:fantastic_note/screens/welcome_screen/components/background.dart';
+import 'package:fantastic_note/screens/welcome/components/background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/svg.dart';

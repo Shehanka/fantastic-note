@@ -25,12 +25,12 @@ class NoteService {
     });
   }
 
-  Stream<QuerySnapshot> getAll({required int offset, required int limit}) {
+  Stream<QuerySnapshot> getAll({int? offset, int? limit}) {
     Stream<QuerySnapshot> snapshots = notesCollection.snapshots();
 
-    snapshots = snapshots.skip(offset);
+    if (offset != null) snapshots = snapshots.skip(offset);
 
-    snapshots = snapshots.take(limit);
+    if (limit != null) snapshots = snapshots.take(limit);
 
     return snapshots;
   }
