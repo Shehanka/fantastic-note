@@ -19,8 +19,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   late BaseAuthentication _authentication;
   final _formKeyLogin = GlobalKey<FormState>();
-  late TextFormField _emailField;
-  late TextField _passwordField = TextField();
   late final TextEditingController _passwordController;
   late final TextEditingController _emailController;
 
@@ -32,22 +30,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
-
-    _emailField = TextFormField(
-      controller: _emailController,
-      decoration: InputDecoration(
-          icon: Icon(Icons.email),
-          labelText: 'Email',
-          hintText: 'Enter your email address'),
-      cursorColor: Colors.deepPurpleAccent,
-    );
-    _passwordField = TextField(
-      controller: _passwordController,
-      decoration: InputDecoration(
-          icon: Icon(Icons.password),
-          labelText: 'Password',
-          hintText: 'Enter password'),
-    );
   }
 
   Future _userLogin() async {
@@ -95,9 +77,11 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: size.height * 0.03),
               RoundedInputField(
                 hintText: "Your Email",
+                controller: _emailController,
                 onChanged: (value) {},
               ),
               RoundedPasswordField(
+                controller: _passwordController,
                 onChanged: (value) {},
               ),
               RoundedButton(
