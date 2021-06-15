@@ -34,16 +34,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future _userLogin() async {
     try {
-      if (_formKeyLogin.currentState!.validate()) {
-        _formKeyLogin.currentState!.save();
+      // if (_formKeyLogin.currentState!.validate()) {
+      // _formKeyLogin.currentState!.save();
 
-        UserCredential userCredential = await _authentication.signIn(
-            _emailController.text, _passwordController.text);
-        log('email: $_emailController.text , password: $_passwordController.text');
-        print(userCredential.user);
+      UserCredential userCredential = await _authentication.signIn(
+          _emailController.text, _passwordController.text);
+      log('email: $_emailController.text , password: $_passwordController.text');
+      print(userCredential.user);
 
-        Modular.to.navigate('/home');
-      }
+      Modular.to.navigate('/home');
+      // }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         log('No user found for that email.');
@@ -86,7 +86,9 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               RoundedButton(
                 text: "LOGIN",
-                press: () {},
+                press: () {
+                  _userLogin();
+                },
               ),
               SizedBox(height: size.height * 0.03),
               AlreadyHaveAnAccountCheck(
