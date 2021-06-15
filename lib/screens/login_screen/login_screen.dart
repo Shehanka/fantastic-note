@@ -1,9 +1,16 @@
 import 'dart:developer';
 
+import 'package:fantastic_note/components/already_have_an_account_acheck.dart';
+import 'package:fantastic_note/components/rounded_button.dart';
+import 'package:fantastic_note/components/rounded_input_field.dart';
+import 'package:fantastic_note/components/rounded_password_field.dart';
+import 'package:fantastic_note/screens/login_screen/components/background.dart';
+import 'package:fantastic_note/screens/signup_screen/signup_screen.dart';
 import 'package:fantastic_note/services/auth/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_svg/svg.dart';
 
 class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
@@ -68,63 +75,52 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        Modular.to.navigate('/welcome');
-        return true;
-      },
-      child: Scaffold(
-          body: Form(
-        key: _formKeyLogin,
-        child: Stack(
-          alignment: Alignment.topLeft,
-          children: [
-            ListView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                      top: 70.0, bottom: 10.0, left: 10.0, right: 10.0),
-                  child: Text(
-                    "Sign In",
-                    softWrap: true,
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      color: Colors.deepPurpleAccent,
-                      decoration: TextDecoration.none,
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: "OpenSans",
+    Size size = MediaQuery.of(context).size;
+
+    return Scaffold(
+      body: Background(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                "LOGIN",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: size.height * 0.03),
+              SvgPicture.asset(
+                "assets/icons/login.svg",
+                height: size.height * 0.35,
+              ),
+              SizedBox(height: size.height * 0.03),
+              RoundedInputField(
+                hintText: "Your Email",
+                onChanged: (value) {},
+              ),
+              RoundedPasswordField(
+                onChanged: (value) {},
+              ),
+              RoundedButton(
+                text: "LOGIN",
+                press: () {},
+              ),
+              SizedBox(height: size.height * 0.03),
+              AlreadyHaveAnAccountCheck(
+                press: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return SignUpScreen();
+                      },
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: 20.0, bottom: 10.0, left: 25.0, right: 25.0),
-                  child: _emailField,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: 20.0, bottom: 10.0, left: 25.0, right: 25.0),
-                  child: _passwordField,
-                ),
-                Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 40.0),
-                  child: MaterialButton(
-                    child: Text(
-                      'Login',
-                      style: TextStyle(
-                          color: Colors.white,
-                          backgroundColor: Colors.deepPurpleAccent),
-                    ),
-                    onPressed: _userLogin,
-                  ),
-                )
-              ],
-            )
-          ],
+                  );
+                },
+              ),
+            ],
+          ),
         ),
-      )),
+      ),
     );
   }
 }

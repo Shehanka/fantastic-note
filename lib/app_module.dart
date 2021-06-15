@@ -1,5 +1,5 @@
 import 'package:fantastic_note/screens/login_screen/login_screen.dart';
-import 'package:fantastic_note/screens/login_screen/signup_screen.dart';
+import 'package:fantastic_note/screens/signup_screen/signup_screen.dart';
 import 'package:fantastic_note/screens/splash_screen/splash_screen.dart';
 import 'package:fantastic_note/screens/welcome_screen/welcome_screen.dart';
 import 'package:flutter_modular/flutter_modular.dart';
