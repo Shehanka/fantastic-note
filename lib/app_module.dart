@@ -1,3 +1,4 @@
+import 'package:fantastic_note/screens/home_screen/home_screen.dart';
 import 'package:fantastic_note/screens/login_screen/login_screen.dart';
 import 'package:fantastic_note/screens/signup_screen/signup_screen.dart';
 import 'package:fantastic_note/screens/splash_screen/splash_screen.dart';
@@ -11,5 +12,6 @@ class AppModule extends Module {
     ChildRoute('/welcome', child: (_, args) => WelcomeScreen()),
     ChildRoute('/login', child: (_, args) => LoginScreen()),
     ChildRoute('/signup', child: (_, args) => SignUpScreen()),
+    ChildRoute('/home', child: (_, args) => HomeScreen()),
   ];
 }
