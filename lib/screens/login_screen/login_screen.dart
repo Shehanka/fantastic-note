@@ -44,26 +44,25 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future _userLogin() async {
-    if (_formKeyLogin.currentState!.validate()) {
-      _formKeyLogin.currentState!.save();
+    try {
+      if (_formKeyLogin.currentState!.validate()) {
+        _formKeyLogin.currentState!.save();
 
-      Future<User?> firebaseUser = _authentication.signIn(
-          _emailController.text, _passwordController.text);
+        UserCredential userCredential = await _authentication.signIn(
+            _emailController.text, _passwordController.text);
+        log('email: $_emailController.text , password: $_passwordController.text');
+        print(userCredential.user);
 
-      log('email: $_emailController.text , password: $_passwordController.text');
-
-      firebaseUser
-          .then((user) => {
-                user!.getIdToken().then((value) {
-                  print('Login Success');
-                  Modular.to.navigate('/home');
-                })
-              })
-          .catchError((e) {
-        print('Sign U in Failed $e');
-      }).catchError((e) {
-        print('Sign in Failed $e');
-      });
+        Modular.to.navigate('/home');
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        log('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        log('Wrong password provided for that user.');
+      }
+    } catch (e) {
+      log('login failed: $e');
     }
   }
 
