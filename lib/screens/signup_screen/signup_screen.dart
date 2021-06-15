@@ -21,11 +21,15 @@ class SignUpScreen extends StatelessWidget {
   final _formKeySignUp = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
 
   _signUpAction() async {
     String email = _emailController.text;
     String password = _passwordController.text;
-    log("Value Check....$email and $password");
+    String firstName = _firstNameController.text;
+    String lastName = _lastNameController.text;
+
     try {
       log("Signuping....");
       UserCredential userCredential = await FirebaseAuth.instance
@@ -34,7 +38,8 @@ class SignUpScreen extends StatelessWidget {
       log("Signup Success");
       String uid = userCredential.user!.uid;
       log("message $uid");
-      _userService.create(UserModel.User("_id", "Chamod", "Perera", uid));
+
+      _userService.create(UserModel.User(email, firstName, lastName, uid));
       Modular.to.navigate('/home');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -61,10 +66,18 @@ class SignUpScreen extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: size.height * 0.03),
-              SvgPicture.asset(
-                "assets/icons/signup.svg",
-                height: size.height * 0.35,
-              ),
+              // SvgPicture.asset(
+              //   "assets/icons/signup.svg",
+              //   height: size.height * 0.35,
+              // ),
+              RoundedInputField(
+                  hintText: "First Name",
+                  controller: _lastNameController,
+                  onChanged: (value) {}),
+              RoundedInputField(
+                  hintText: "First Name",
+                  controller: _firstNameController,
+                  onChanged: (value) {}),
               RoundedInputField(
                 hintText: "Your Email",
                 onChanged: (value) {},
