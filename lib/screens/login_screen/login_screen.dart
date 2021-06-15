@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fantastic_note/services/auth/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -31,11 +33,6 @@ class _LoginScreenState extends State<LoginScreen> {
           labelText: 'Email',
           hintText: 'Enter your email address'),
       cursorColor: Colors.deepPurpleAccent,
-      validator: (String? value) {
-        return (value != null && value.contains('@'))
-            ? 'Do not use the @ char.'
-            : null;
-      },
     );
     _passwordField = TextField(
       controller: _passwordController,
@@ -53,9 +50,18 @@ class _LoginScreenState extends State<LoginScreen> {
       Future<User?> firebaseUser = _authentication.signIn(
           _emailController.text, _passwordController.text);
 
+      log('email: $_emailController.text , password: $_passwordController.text');
+
       firebaseUser
-          .then((value) => {Modular.to.navigate('/home')})
+          .then((user) => {
+                user!.getIdToken().then((value) {
+                  print('Login Success');
+                  Modular.to.navigate('/home');
+                })
+              })
           .catchError((e) {
+        print('Sign U in Failed $e');
+      }).catchError((e) {
         print('Sign in Failed $e');
       });
     }
