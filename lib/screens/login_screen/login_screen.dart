@@ -26,18 +26,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
     _authentication = Authentication();
 
-    _emailField = TextField(
-      controller: _emailController,
-    );
+   
 
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+
+     _emailField = TextField(
+      controller: _emailController,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.amberAccent,
         body: Form(
           key: _formKeyLogin,
           child: Stack(
