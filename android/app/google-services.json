@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "978499062122",
+    "project_id": "ctse-assignment-779bc",
+    "storage_bucket": "ctse-assignment-779bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:978499062122:android:0cc2e4bcc896838a86bd13",
+        "android_client_info": {
+          "package_name": "com.chamodshehanka.fantastic_note"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "978499062122-il5cakhe72phoqt3du03f7trg6jujnc2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6UMtlk9CifCq58hsPKQeukY5wXlYv_Rg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "978499062122-il5cakhe72phoqt3du03f7trg6jujnc2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "978499062122-8d3gvgbtfu4gmbrjqsvq2jmougufn9af.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.chamodshehanka.ctse-assignment"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
