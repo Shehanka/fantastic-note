@@ -11,6 +11,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
@@ -42,17 +44,38 @@ class _LoginScreenState extends State<LoginScreen> {
       log('email: $_emailController.text , password: $_passwordController.text');
       print(userCredential.user);
 
+      _resetFormFields();
       Modular.to.navigate('/home');
       // }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
+        showTopSnackBar(
+          context,
+          CustomSnackBar.info(
+            message: "No user found for that email.",
+            backgroundColor: Colors.amberAccent,
+            textStyle: TextStyle(color: Colors.black),
+          ),
+        );
         log('No user found for that email.');
       } else if (e.code == 'wrong-password') {
+        showTopSnackBar(
+          context,
+          CustomSnackBar.info(
+            message: "Wrong password provided for that user.",
+            backgroundColor: Colors.redAccent,
+          ),
+        );
         log('Wrong password provided for that user.');
       }
     } catch (e) {
       log('login failed: $e');
     }
+  }
+
+  _resetFormFields() {
+    _emailController.clear();
+    _passwordController.clear();
   }
 
   @override
