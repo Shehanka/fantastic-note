@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fantastic_note/models/collection.dart';
 import 'package:fantastic_note/models/note.dart';
+import 'package:fantastic_note/screens/notes/addnote.dart';
 import 'package:fantastic_note/services/custom/note_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,28 @@ class _NotesTabState extends State<NotesTab> {
             child: Center(child: Text('Notes are not available!!')),
           );
 
-    return Scaffold(backgroundColor: Colors.white10, body: notesTabBody);
+    return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context)
+                .push(
+              MaterialPageRoute(
+                builder: (context) => AddNote(),
+              ),
+            )
+                .then((value) {
+              print("Calling Set  State !");
+              setState(() {});
+            });
+          },
+          child: Icon(
+            Icons.add,
+            color: Colors.white70,
+          ),
+          backgroundColor: Colors.grey[700],
+        ),
+        backgroundColor: Colors.white10,
+        body: notesTabBody);
   }
 
   buildTilesList(Note note) => ListTile(
@@ -85,7 +107,7 @@ class _NotesTabState extends State<NotesTab> {
           ),
         ),
         title: Text(
-          note.title,
+          note.description,
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       );
