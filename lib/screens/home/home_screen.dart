@@ -18,6 +18,12 @@ class _HomeScreenState extends State<HomeScreen> {
               Modular.to.navigate('/users');
             },
             child: Text('Users list'),
+          ),
+          MaterialButton(
+            onPressed: () {
+              Modular.to.navigate('/notes');
+            },
+            child: Text('Note list'),
           )
         ],
       ),
