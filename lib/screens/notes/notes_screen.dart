@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fantastic_note/components/rounded_input_field.dart';
 import 'package:fantastic_note/models/collection.dart';
+import 'package:fantastic_note/models/note.dart';
 import 'package:fantastic_note/screens/notes/note_tab.dart';
 import 'package:fantastic_note/services/custom/note_service.dart';
 import 'package:flutter/material.dart';
@@ -15,14 +17,16 @@ class _NotesScreenState extends State<NotesScreen>
     with TickerProviderStateMixin {
   late List<NoteCollection> _noteCollectionList;
   NoteService _noteService = NoteService();
-  late StreamSubscription<QuerySnapshot> noteSubsciption;
-  late TabController _collectionTabController;
+  late TabController _collectionTabController =
+      TabController(length: 0, vsync: this);
 
   @override
   void initState() {
     super.initState();
     _noteCollectionList = [];
-    noteSubsciption = _noteService
+    // ignore: unused_local_variable
+    // ignore: cancel_subscriptions
+    StreamSubscription<QuerySnapshot> noteSubsciption = _noteService
         .getUserNoteCollections("1Cp5BSg6QlMhUM8DvJQU2fuvSHU2")
         .listen((QuerySnapshot snapshot) {
       List<NoteCollection> noteCollections = snapshot.docs
@@ -45,9 +49,11 @@ class _NotesScreenState extends State<NotesScreen>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: Colors.grey[300],
       appBar: new AppBar(
         title: new Text("Notes"),
+        backgroundColor: Colors.deepPurpleAccent,
+        centerTitle: true,
+        automaticallyImplyLeading: false,
         bottom: TabBar(
           controller: _collectionTabController,
           isScrollable: true,

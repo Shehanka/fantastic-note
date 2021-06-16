@@ -1,3 +1,4 @@
+import 'package:fantastic_note/screens/collection/collection_screen.dart';
 import 'package:fantastic_note/screens/home/home_screen.dart';
 import 'package:fantastic_note/screens/login/login_screen.dart';
 import 'package:fantastic_note/screens/notes/notes_screen.dart';
@@ -16,6 +17,7 @@ class AppModule extends Module {
     ChildRoute('/signup', child: (_, args) => SignUpScreen()),
     ChildRoute('/home', child: (_, args) => HomeScreen()),
     ChildRoute('/notes', child: (_, args) => NotesScreen()),
+    ChildRoute('/collections', child: (_, args) => CollectionScreen()),
     ChildRoute('/users', child: (_, args) => UserListScreen()),
   ];
 }

@@ -6,7 +6,6 @@ class Note {
   late String _description;
   late String _collection;
   late String _primaryUser;
-  //late List _todos;
   //late List<String> _sharedUsers;
 
   Note(this._id, this._title, this._description, this._collection,
@@ -17,7 +16,6 @@ class Note {
     this._title = note['title'];
     this._description = note['description'];
     //this._sharedUsers = note['sharedUsers'];
-    //this._todos = note['todo'];
     this._primaryUser = note['primaryUser'];
     this._collection = note['collection'];
   }
@@ -25,7 +23,6 @@ class Note {
   String get id => _id;
   String get title => _title;
   String get description => _description;
-  //List get todo => _todos;
   //List get sharedUsers => _sharedUsers;
   String get primaryUser => _primaryUser;
   String get collection => _collection;
@@ -36,7 +33,6 @@ class Note {
     map['title'] = _title;
     map['description'] = _description;
     //map['sharedUsers'] = _sharedUsers;
-    //map['todo'] = _todos;
     map['collection'] = _collection;
     map['primaryUser'] = _primaryUser;
 
@@ -48,7 +44,6 @@ class Note {
     this._title = map['title'];
     this._description = map['description'];
     //this._sharedUsers = map['sharedUsers'];
-    //this._todos = map['todo'];
     this._primaryUser = map['primaryUser'];
     this._collection = map['collection'];
   }

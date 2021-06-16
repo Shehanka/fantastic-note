@@ -1,112 +1,113 @@
 import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fantastic_note/components/delete_dialog.dart';
 import 'package:fantastic_note/components/rounded_input_field.dart';
 import 'package:fantastic_note/models/collection.dart';
-import 'package:fantastic_note/models/note.dart';
-import 'package:fantastic_note/screens/notes/note_details.dart';
 import 'package:fantastic_note/services/custom/note_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class NotesTab extends StatefulWidget {
-  NotesTab(this.collection, {Key? key});
-  final NoteCollection collection;
-
-  @override
-  _NotesTabState createState() => _NotesTabState();
+class CollectionScreen extends StatefulWidget {
+  _ColletionScreenState createState() => _ColletionScreenState();
 }
 
-class _NotesTabState extends State<NotesTab> {
-  late List<Note> noteList;
-  NoteService noteService = NoteService();
-  late StreamSubscription<QuerySnapshot> noteSubscription;
+class _ColletionScreenState extends State<CollectionScreen> {
+  late List<NoteCollection> _noteCollectionList;
+  NoteService _noteService = NoteService();
 
   @override
   void initState() {
     super.initState();
-
-    noteList = [];
-    noteSubscription = noteService
-        .getNotesByCollection(widget.collection.id)
+    _noteCollectionList = [];
+    // ignore: cancel_subscriptions
+    // ignore: unused_local_variable
+    // ignore: cancel_subscriptions
+    StreamSubscription<QuerySnapshot> noteSubsciption = _noteService
+        .getUserNoteCollections("1Cp5BSg6QlMhUM8DvJQU2fuvSHU2")
         .listen((QuerySnapshot snapshot) {
-      List<Note> notes = snapshot.docs
-          .map((d) => Note.fromMap(d.data() as Map<String, dynamic>))
+      List<NoteCollection> noteCollections = snapshot.docs
+          .map((d) => NoteCollection.fromMap(d.data() as Map<String, dynamic>))
           .toList();
       setState(() {
-        print(notes);
-        noteList = notes;
+        this._noteCollectionList = noteCollections;
       });
     });
   }
 
   @override
   void dispose() {
-    noteSubscription?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Card makeCard(Note note) => Card(
+    Card makeCard(NoteCollection collection) => Card(
           elevation: 8.0,
           margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
           child: Container(
             decoration: BoxDecoration(color: Colors.deepPurpleAccent[100]),
-            child: buildTilesList(note),
+            child: buildTilesList(collection),
           ),
         );
 
-    final notesTabBody = noteList != []
+    final notesTabBody = _noteCollectionList != []
         ? Container(
             child: ListView.builder(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              itemCount: noteList.length,
+              itemCount: _noteCollectionList.length,
               itemBuilder: (BuildContext context, int index) {
-                return makeCard(noteList[index]);
+                return makeCard(_noteCollectionList[index]);
               },
             ),
           )
         : Container(
             child: Center(
-                child: Text('Collection Is Empty !',
+                child: Text('No Collections !',
                     style:
                         TextStyle(fontSize: 30, fontWeight: FontWeight.w600))),
           );
 
     return Scaffold(
       backgroundColor: Colors.white10,
+      appBar: AppBar(
+        backgroundColor: Colors.deepPurpleAccent,
+        title: Text("Note Collections"),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
       body: notesTabBody,
       floatingActionButton: FloatingActionButton(
-          onPressed: () => {_createNewNote(context, widget.collection)},
-          child: Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-          backgroundColor: Colors.deepPurpleAccent),
+        onPressed: () => {_createNewCollection(context)},
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        backgroundColor: Colors.deepPurpleAccent,
+      ),
     );
   }
 
-  buildTilesList(Note note) => ListTile(
+  buildTilesList(NoteCollection collection) => ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
         title: Text(
-          note.title,
+          collection.name,
           style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25),
         ),
         trailing: Wrap(
           spacing: 5,
           children: <Widget>[
             FlatButton(
-                onPressed: () => {_editNote(context, note, widget.collection)},
+                onPressed: () => {_editCollection(context, collection)},
                 child: Icon(
                   Icons.edit,
                   color: Colors.yellowAccent,
                   size: 25,
                 )),
             FlatButton(
-                onPressed: () => {showDeleteConfirmationDialog(context, note)},
+                onPressed: () =>
+                    {showDeleteConfirmationDialog(context, collection)},
                 child: Icon(
                   Icons.delete,
                   color: Colors.redAccent,
@@ -114,53 +115,49 @@ class _NotesTabState extends State<NotesTab> {
                 )), // icon-1
           ],
         ),
-        onTap: () => {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => NoteDetailScreen(note)))
-        },
       );
 
-  void _createNewNote(BuildContext context, NoteCollection collection) async {
+  void _createNewCollection(BuildContext context) async {
     showDialog(
         context: context,
         builder: (_) {
           return FantasticDialog(
-            note: new Note("", "", "", "", ""),
-            collection: collection,
+            collection: new NoteCollection("", "", ""),
           );
         });
   }
 
-  void _editNote(
-      BuildContext context, Note note, NoteCollection collection) async {
+  void _editCollection(BuildContext context, NoteCollection collection) async {
     showDialog(
         context: context,
         builder: (_) {
           return FantasticDialog(
-            note: note,
             collection: collection,
           );
         });
   }
 }
 
-void showDeleteConfirmationDialog(BuildContext context, Note note) {
-  if (note.id != null) {
+void showDeleteConfirmationDialog(
+    BuildContext context, NoteCollection collection) {
+  if (collection.id != null) {
     showDialog(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return DeleteDialogBox(
             title: 'Are you sure?',
-            description: note.title + ' note will be permanently deleted!',
+            description:
+                collection.name + ' collection will be permanently deleted!',
             confirmation: true,
             confirmationAction: () {
               NoteService _noteService = NoteService();
-              Future<dynamic> isDeleted = _noteService.deleteNote(note.id);
+              Future<dynamic> isDeleted =
+                  _noteService.deleteCollection(collection.id);
               if (isDeleted != null) {
                 Navigator.pop(context);
               } else {
-                print('Note Delete Failed');
+                print('Collection Delete Failed');
               }
             },
           );
@@ -172,8 +169,7 @@ void showDeleteConfirmationDialog(BuildContext context, Note note) {
 }
 
 class FantasticDialog extends StatefulWidget {
-  FantasticDialog({Key? key, required this.note, required this.collection});
-  final Note note;
+  FantasticDialog({Key? key, required this.collection});
   final NoteCollection collection;
   _FantasticDialogState createState() => _FantasticDialogState();
 }
@@ -181,14 +177,12 @@ class FantasticDialog extends StatefulWidget {
 class _FantasticDialogState extends State<FantasticDialog> {
   final _formKeyAddTodo = GlobalKey<FormState>();
 
-  TextEditingController titleController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
   NoteService _noteService = NoteService();
   @override
   void initState() {
-    if (widget.note.id != "") {
-      titleController.text = widget.note.title;
-      descriptionController.text = widget.note.description;
+    if (widget.collection.id != "") {
+      nameController.text = widget.collection.name;
     }
     super.initState();
   }
@@ -197,11 +191,11 @@ class _FantasticDialogState extends State<FantasticDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      title: widget.note.id == ""
-          ? Text('Create Note',
+      title: widget.collection.id == ""
+          ? Text('Create Collection',
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.deepPurple))
-          : Text('Update Note',
+          : Text('Update Collection',
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.deepPurple)),
       content: Form(
@@ -211,14 +205,8 @@ class _FantasticDialogState extends State<FantasticDialog> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             RoundedInputField(
-              controller: titleController,
-              hintText: 'Note Title',
-              onChanged: (value) {},
-            ),
-            SizedBox(height: 15),
-            RoundedInputField(
-              controller: descriptionController,
-              hintText: 'Note Description',
+              controller: nameController,
+              hintText: 'Collection Name',
               onChanged: (value) {},
             ),
             SizedBox(height: 15),
@@ -235,27 +223,23 @@ class _FantasticDialogState extends State<FantasticDialog> {
                   onPressed: () {
                     if (_formKeyAddTodo.currentState!.validate()) {
                       // Adding to DB
-                      if (widget.note.id == "") {
-                        Future<Note> isAdded = _noteService.createNote(
-                            titleController.text,
-                            descriptionController.text,
-                            widget.collection.id,
-                            "1Cp5BSg6QlMhUM8DvJQU2fuvSHU2");
+                      if (widget.collection.id == "") {
+                        Future<NoteCollection> isAdded =
+                            _noteService.createCollection(nameController.text,
+                                "1Cp5BSg6QlMhUM8DvJQU2fuvSHU2");
                         if (isAdded != null) {
                           Navigator.pop(context);
                         } else {
                           Navigator.pop(context);
                         }
                       } else {
-                        Note newNote = Note(
-                            widget.note.id,
-                            titleController.text,
-                            descriptionController.text,
+                        NoteCollection newNoteCollection = NoteCollection(
                             widget.collection.id,
+                            nameController.text,
                             "1Cp5BSg6QlMhUM8DvJQU2fuvSHU2");
 
                         Future<dynamic> isUpdated =
-                            _noteService.updateNote(newNote);
+                            _noteService.updateCollection(newNoteCollection);
                         if (isUpdated != null) {
                           Navigator.pop(context);
                         } else {
