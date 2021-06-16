@@ -4,8 +4,7 @@ import 'package:fantastic_note/components/already_have_an_account_acheck.dart';
 import 'package:fantastic_note/components/rounded_button.dart';
 import 'package:fantastic_note/components/rounded_input_field.dart';
 import 'package:fantastic_note/components/rounded_password_field.dart';
-import 'package:fantastic_note/screens/login_screen/components/background.dart';
-import 'package:fantastic_note/screens/signup_screen/signup_screen.dart';
+import 'package:fantastic_note/screens/login/components/background.dart';
 import 'package:fantastic_note/services/auth/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -116,14 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: size.height * 0.03),
               AlreadyHaveAnAccountCheck(
                 press: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return SignUpScreen();
-                      },
-                    ),
-                  );
+                  Modular.to.navigate('/login');
                 },
               ),
             ],
